@@ -18,7 +18,11 @@ This project is a challenge made by [devgrid](http://devgrid.co.uk).
 
 The goals of the challenge are:
 
-* Provision an instance from scratch using Terraform on a cloud provider of your choice (Digital Ocean or AWS);
+* Choose on Cloud provider from the list below and ask us the credentials via the email we sent
+   * Digital Ocean
+   * AWS
+   * GCP
+* Provision an instance from scratch using Terraform on a cloud provider of your choice
 * Install and configure a CI/CD tool of your choice in this new VM using Ansible;
 * Configure a push deploy pipeline with the CI/CD tool with these repositories:
   * https://github.com/devgrid/calculator-service
@@ -32,6 +36,7 @@ There are good examples of creating different resources using terraform and ansi
 
 * https://github.com/terraform-providers
 * https://github.com/ansible/ansible-examples
+
 
 ## After you finish
 
