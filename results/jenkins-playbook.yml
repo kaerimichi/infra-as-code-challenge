@@ -1,0 +1,50 @@
+---
+- name: Jenkins Setup
+  hosts: all
+  remote_user: root
+  gather_facts: true
+
+  tasks:
+    - name: Update the system packager
+      yum:
+        name: "*"
+        update_cache: yes
+    - name: Install dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - java-1.8.0-openjdk
+        - git
+        - texlive-latex
+        - wget
+        - deltarpm
+        - maven
+    - name: Download Jenkins repository file
+      get_url:
+        url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+        dest: /etc/yum.repos.d/jenkins.repo
+    - name: Import Jenkins key
+      rpm_key:
+        key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+        state: present
+    - name: Install Jenkins
+      yum:
+        name: "jenkins"
+        state: present
+    - name: Allow port 8080 on FW
+      shell: iptables -I INPUT -p tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
+    - name: Start the server
+      service:
+        name: jenkins
+        state: started
+    - name: Wait for the service to respond on port 8080
+      wait_for:
+        port: 8080
+    - name: Wait for the initial password to be ready
+      wait_for:
+        path: /var/lib/jenkins/secrets/initialAdminPassword
+    - name: Display the administrator password
+      become: yes
+      become_method: sudo
+      command: cat /var/lib/jenkins/secrets/initialAdminPassword

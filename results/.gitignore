@@ -1,0 +1,6 @@
+*.tfstate
+*.tfstate.backup
+.terraform/
+/hosts
+/ssh_keys/
+.DS_Store
